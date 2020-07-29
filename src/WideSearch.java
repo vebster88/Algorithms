@@ -25,7 +25,7 @@ public class WideSearch {
         widesearch.put("thom", thom);
         widesearch.put("jonny", jonny);
 
-        searching("me", widesearch);
+        searching("peggy", search_queue("me", widesearch));
 
     }
     public static LinkedList<String> search_queue(String human, Map<String, String[]> map) {
@@ -41,9 +41,13 @@ public class WideSearch {
     public static String searching(String name, LinkedList<String> deque) {
         String result = "";
         while (!deque.isEmpty()) {
-
+            result = deque.getFirst();
+            deque.removeFirst();
+            if (result == name) {
+                return name;
+            }
         }
-     return result;
+     return "There were not" + name;
     }
 
 }
