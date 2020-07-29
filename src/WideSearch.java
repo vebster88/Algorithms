@@ -1,12 +1,13 @@
 import java.util.*;
 
 public class WideSearch {
+    static String person = "jonny";
+    static LinkedList<String> deque = new LinkedList<>();
+    static ArrayList<String> searched = new ArrayList<>();
 
     public static void main(String[] args) {
+
         HashMap<String, String[]> widesearch = new HashMap<>();
-        Set<String> names = new HashSet<>(Arrays.asList("me", "bob", "alice", "bob", "claire", "anuj", "peggy", "thom", "jonny"));
-
-
         String[] you = {"alice", "bob", "claire"};
         String[] bob = {"anuj", "peggy"};
         String[] alice = {"peggy"};
@@ -15,7 +16,6 @@ public class WideSearch {
         String[] peggy = {};
         String[] thom = {};
         String[] jonny = {};
-
         widesearch.put("me", you);
         widesearch.put("alice", alice);
         widesearch.put("bob", bob);
@@ -24,30 +24,38 @@ public class WideSearch {
         widesearch.put("peggy", peggy);
         widesearch.put("thom", thom);
         widesearch.put("jonny", jonny);
-
-        searching("peggy", search_queue("me", widesearch));
+        System.out.println(search_queue("me", widesearch));
 
     }
-    public static LinkedList<String> search_queue(String human, Map<String, String[]> map) {
-        LinkedList<String> deque = new LinkedList<>();
+    public static String search_queue(String human, Map<String, String[]> map) {
+
+        String result = "";
         String[] arr = map.get(human);
         for (String p: arr) {
-            deque.addLast(p);
-        }
-
-        return deque;
-    }
-
-    public static String searching(String name, LinkedList<String> deque) {
-        String result = "";
+            deque.addLast(p);}
         while (!deque.isEmpty()) {
             result = deque.getFirst();
             deque.removeFirst();
-            if (result == name) {
-                return name;
+            if (!isSearched(result)) {
+                if (result == person) {
+                    return "The person is " + result;
+                } else {
+                    searched.add(result);
+                    return search_queue(result, map); }
+            } else continue;
+        }
+        return "There are not " + person;
+    }
+
+    public static boolean isSearched(String name) {
+        boolean check = false;
+        for (String names: searched
+             ) {
+            if (names == name) {
+                check = true;
             }
         }
-     return "There were not" + name;
+        return check;
     }
 
 }
