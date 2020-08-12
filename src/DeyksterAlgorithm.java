@@ -8,19 +8,25 @@ static Map<String, Integer> costs = new HashMap<>();
 static Map<String, String> parents = new HashMap<>();
 static List<String> processed = new ArrayList<>();
 
-
-
     public static void main(String[] args) {
         Map<String, Integer> start = new HashMap<>();
-        start.put("a", 6);
+        start.put("a", 5);
         start.put("b", 2);
 
         Map<String, Integer> A = new HashMap<>();
-        A.put("fin", 1);
+        A.put("c", 4);
+        A.put("d", 2);
 
         Map<String, Integer> B = new HashMap<>();
-        B.put("a", 3);
-        B.put("fin", 5);
+        B.put("a", 8);
+        B.put("d", 7);
+
+        Map<String, Integer> C = new HashMap<>();
+        C.put("fin", 3);
+        C.put("d", 6);
+
+        Map<String, Integer> D = new HashMap<>();
+        D.put("fin", 1);
 
         Integer infinity = MAX_VALUE;
         String node = "";
@@ -28,20 +34,20 @@ static List<String> processed = new ArrayList<>();
         deykster.put("start", (HashMap) start);
         deykster.put("a", (HashMap) A);
         deykster.put("b", (HashMap) B);
+        deykster.put("c", (HashMap) C);
+        deykster.put("d", (HashMap) D);
         deykster.put("fin", null);
 
         parents.put("a", "start");
         parents.put("b", "start");
+        parents.put("c", null);
+        parents.put("d", null);
         parents.put("fin", null);
 
-        costs.put("a", 6);
-//        costs.put("a1", 16);
-//        processed.add("a4");
-//        processed.add("a3");
-//        costs.put("a2", 65);
-//        costs.put("a3", 1);
-//        costs.put("a4", -6);
+        costs.put("a", 5);
         costs.put("b", 2);
+        costs.put("c", infinity);
+        costs.put("d", infinity);
         costs.put("fin", infinity);
 
         node = find_lowest_cost_node(costs);
@@ -56,7 +62,11 @@ static List<String> processed = new ArrayList<>();
                     parents.put(neigh.getKey(), node);
                 }
             }
+            processed.add(node);
+            node = find_lowest_cost_node(costs);
         }
+        System.out.println("Наименьшая скорость достижения конца пути - " + costs.get(node));
+        System.out.println("Звено родитель - " + parents.get(node));
     }
 
     public static String find_lowest_cost_node(Map<String, Integer> costs) {
@@ -68,18 +78,13 @@ static List<String> processed = new ArrayList<>();
              ) {
             current = cost.getValue();
             curr = cost.getKey();
-//          if (lowest == MAX_VALUE) {
-//                lowest = current;
-//                low = cost.getKey();
-//          } else {
 
-                if ((lowest > current)&&(!processed.contains(curr))) {
+                if ((lowest > current)&&(!isProcessed(curr))) {
                     lowest = current;
                     low = cost.getKey();
                 }
-//          }
         }
-        System.out.println(lowest);
+
         return low;
     }
 
